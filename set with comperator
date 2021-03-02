@@ -1,0 +1,129 @@
+struct comp
+{
+    bool operator()(const pair<int, int> &a, const pair<int, int> &b) const
+    {
+        int lena, lenb;
+        lena = a.second - a.first + 1;
+        lenb = b.second - b.first + 1;
+        if (lena == lenb)
+            return a.first < b.first;
+        return lena > lenb;
+    }
+};
+
+++++++++++++
+application question link--https://codeforces.com/problemset/problem/1353/D
+++++++++++++
+#include "bits/stdc++.h"
+
+using namespace std;
+#define inti long long
+#define ll long long
+
+struct comp
+{
+    bool operator()(const pair<int, int> &a, const pair<int, int> &b) const
+    {
+        int lena, lenb;
+        lena = a.second - a.first + 1;
+        lenb = b.second - b.first + 1;
+        if (lena == lenb)
+            return a.first < b.first;
+        return lena > lenb;
+    }
+};
+int main()
+{
+    ios_base::sync_with_stdio(false);
+    cin.tie(0);
+    cout.tie(0);
+
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        int n;
+        cin >> n;
+        if (n == 1)
+        {
+            cout << "1" << endl;
+        }
+        else if (n == 2)
+        {
+            cout << "1 2" << endl;
+        }
+        else
+        {
+            int l = 0;
+            int h = n - 1;
+            int idx;
+            if (((h - l + 1) % 2) == 0)
+            {
+                idx = (h + l - 1) / 2;
+            }
+            else
+            {
+                idx = (h + l) / 2;
+            }
+            int arr[n] = {0};
+            int op = 1;
+            arr[idx] = op;
+            op++;
+
+            set<pair<int, int>, comp> s;
+            s.insert({l, idx - 1});
+            s.insert({idx + 1, h});
+
+            while (!s.empty())
+            {
+
+                auto val = (*(s.begin()));
+                s.erase(s.begin());
+
+                int l = val.first;
+                int h = val.second;
+                int idx;
+                if (((h - l + 1) % 2) == 0)
+                {
+                    idx = (h + l - 1) / 2;
+                }
+                else
+                {
+                    idx = (h + l) / 2;
+                }
+                arr[idx] = op;
+                op++;
+                if (l <= (idx - 1))
+                    s.insert({l, idx - 1});
+                if (h >= (idx + 1))
+                    s.insert({idx + 1, h});
+            }
+
+            for (int i = 0; i < n; i++)
+            {
+                cout << arr[i] << " ";
+            }
+            cout << endl;
+        }
+    }
+}
+
+============================================================
+aLernative solution
+ex::
+bool comp(const pair<int, int> &a, const pair<int, int> &b)
+{
+    int lena, lenb;
+    lena = a.second - a.first + 1;
+    lenb = b.second - b.first + 1;
+    if (lena == lenb)
+        return a.first < b.first;
+    return lena > lenb;
+}
+int main()
+{
+    set<pair<int, int>, decltype(&comp)> s(&comp);
+}
+
+
+HERE :: decltype is the keyword that evalute the type of expersion or fuction
